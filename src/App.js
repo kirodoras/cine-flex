@@ -1,3 +1,5 @@
+import "./styles/reset.css";
+import "./styles/styles.css";
 import Header from "./components/Header";
 import CardsPlace from "./components/CardsPlace";
 import ChoosePlace from "./components/ChoosePlace";
