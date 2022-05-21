@@ -25,6 +25,8 @@ export default function CardsPlace() {
         promise.then(response => {
             console.log(response.data);
             setCards(response.data);
+        }).catch((error) => {
+            console.log(error)
         });
     }, []);
 

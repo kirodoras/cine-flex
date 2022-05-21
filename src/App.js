@@ -12,10 +12,10 @@ export default function App() {
         <BrowserRouter>
             <Header></Header>
             <Routes>
-                <Route path="/" element={<CardsPlace />} />
-                <Route path="/sessoes/:idFilme" element={<ChoosePlace />} />
-                <Route path="/assentos/:idSessao" element={<SelectPlace />} />
-                <Route path="/success" element={<SuccessPlace />} />
+                <Route path="/" element={<CardsPlace />}> </Route>
+                <Route path="/sessoes/:idFilme" element={<ChoosePlace />}></Route>
+                <Route path="/assentos/:idSessao" element={<SelectPlace />}></Route>
+                <Route path="/success" element={<SuccessPlace />}></Route>
             </Routes>
         </BrowserRouter>
     );

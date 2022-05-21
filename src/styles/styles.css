@@ -236,6 +236,7 @@ main {
     background-color: #E8833A;
     border-radius: 3px;
     margin-top: 50px;
+    margin-bottom: 50px;
 }
 
 .successPlace {
@@ -286,6 +287,7 @@ main {
     color: #FFFFFF;
     background-color: #E8833A;
     margin-top: 80px;
+    margin-bottom: 80px;
     border-radius: 3px;
 }
 

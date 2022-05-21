@@ -1,3 +1,4 @@
+import { useParams } from 'react-router-dom';
 import Action from "./Action";
 import Footer from "./Footer";
 
@@ -17,8 +18,13 @@ function Seat(props) {
 }
 
 export default function SelectPlace() {
+    //LOGIC
+    const {idSessao} = useParams();
+    console.log(idSessao);
+
+    //UI
     return (
-        <main className="hidden">
+        <main>
             <div className="selectPlace">
                 <Action>
                     Selecione o(s) assento(s)
