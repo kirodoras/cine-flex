@@ -1,5 +1,4 @@
-import { useParams } from 'react-router-dom';
-import { Link } from "react-router-dom";
+import { useParams, useNavigate} from 'react-router-dom';
 import React from 'react';
 import axios from "axios";
 import Action from "./Action";
@@ -56,6 +55,7 @@ function Seat(props) {
 export default function SelectPlace() {
     //LOGIC
     const { idSessao } = useParams();
+    const navigate = useNavigate();
     const [seats, setSeats] = React.useState([]);
     const [seatsSelects, setSeatsSelects] = React.useState([]);
     const [movieTitle, setMovieTitle] = React.useState('');
@@ -78,12 +78,18 @@ export default function SelectPlace() {
     function submitData(event) {
         event.preventDefault();
         if (seatsSelects.length > 0) {
-            axios.post("https://mock-api.driven.com.br/api/v5/cineflex/seats/book-many", 
+            const promise = axios.post("https://mock-api.driven.com.br/api/v5/cineflex/seats/book-many", 
             {
                 ids: seatsSelects,
                 name: name,
                 cpf: cpf,
             });
+
+            promise.then((response) => {
+                navigate("/success");
+                console.log(response);
+            }).catch(err => console.log(err));  
+
         } else {
             alert("Erro, verifique o(s) assento(s)");
         }
