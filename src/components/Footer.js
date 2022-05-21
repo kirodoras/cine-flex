@@ -9,7 +9,7 @@ export default function Footer(props) {
                     {props.movieTitle}
                 </div>
                 <div className="movieDate">
-                    {props.day}
+                    {props.weekday ? `${props.weekday} - ${props.hour}` : null}
                 </div>
             </div>
         </footer>

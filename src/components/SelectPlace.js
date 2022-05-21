@@ -1,26 +1,56 @@
 import { useParams } from 'react-router-dom';
+import React from 'react';
+import axios from "axios";
 import Action from "./Action";
 import Footer from "./Footer";
 
-const seatsNumbers = [
-    '01', '02', '03', '04', '05', '06', '08', '09', '10',
-    '11', '12', '13', '14', '15', '16', '18', '19', '20',
-    '21', '22', '23', '24', '25', '26', '28', '29', '30',
-    '31', '32', '33', '34', '35', '36', '38', '39', '40',
-    '41', '42', '43', '44', '45', '46', '48', '49', '50',];
-
 function Seat(props) {
+    //LOGIC
+    //UI
+    function IsAvailable() {
+        if (props.isAvailable) {
+            return (
+                <div className="seat">
+                    {props.number}
+                </div>
+            );
+        } else {
+            return (
+                <div className="seat yellow">
+                    {props.number}
+                </div>
+            );
+        }
+    }
     return (
-        <div className="seat">
-            {props.number}
-        </div>
+        IsAvailable()
     );
 }
 
 export default function SelectPlace() {
     //LOGIC
-    const {idSessao} = useParams();
+    const { idSessao } = useParams();
     console.log(idSessao);
+    const [seats, setSeats] = React.useState([]);
+    const [movieTitle, setMovieTitle] = React.useState('');
+    const [movieUrl, setMovieUrl] = React.useState('');
+    const [hour, setHour] = React.useState('');
+    const [weekday, setWeekday] = React.useState('');
+
+    React.useEffect(() => {
+        const promise = axios.get(`https://mock-api.driven.com.br/api/v5/cineflex/showtimes/${idSessao}/seats`);
+
+        promise.then(response => {
+            console.log(response.data);
+            setSeats(response.data.seats);
+            setMovieTitle(response.data.movie.title);
+            setMovieUrl(response.data.movie.posterURL);
+            setHour(response.data.name);
+            setWeekday(response.data.day.weekday);
+        }).catch((error) => {
+            console.log(error)
+        });
+    }, [idSessao]);
 
     //UI
     return (
@@ -30,7 +60,7 @@ export default function SelectPlace() {
                     Selecione o(s) assento(s)
                 </Action>
                 <div className="seatsPlace">
-                    {seatsNumbers.map((value,index) => <Seat number={value} key={index}></Seat>)}
+                    {seats.map((value) => <Seat number={value.name} key={value.id} isAvailable={value.isAvailable}></Seat>)}
                 </div>
                 <div className="selectSubtitles">
                     <div className="subtitle">
@@ -64,7 +94,7 @@ export default function SelectPlace() {
                         <button type="submit">Reservar assento(s)</button>
                     </form>
                 </div>
-                <Footer></Footer>
+                <Footer movieTitle={movieTitle} movieUrl={movieUrl} hour={hour} weekday={weekday}></Footer>
             </div>
         </main>
     );

@@ -140,7 +140,7 @@ main {
 
 .seatsPlace {
     display: flex;
-    justify-content: space-between;
+    justify-content: space-evenly;
     flex-wrap: wrap;
     width: 100%;
     gap: 8px;
@@ -150,10 +150,8 @@ main {
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 26px;
-    height: 26px;
-    left: 91px;
-    top: 247px;
+    width: 25px;
+    height: 25px;
 
     background-color: #C3CFD9;
     border: 1px solid #808F9D;
