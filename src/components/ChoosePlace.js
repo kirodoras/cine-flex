@@ -1,7 +1,12 @@
+import { useParams } from 'react-router-dom';
 import Action from "./Action";
 import Footer from "./Footer";
 
 export default function ChoosePlace() {
+    //LOGIC
+    const idFilm = useParams();
+	console.log(idFilm);
+    //UI
     return (
         <main className="hidden">
             <div className="choosePlace">
