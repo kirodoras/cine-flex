@@ -224,7 +224,7 @@ main {
     font-style: italic;
 }
 
-.formPlace button {
+.formPlace .submit {
     border: none;
     width: 225px;
     max-width: 100%;

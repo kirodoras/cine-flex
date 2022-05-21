@@ -1,4 +1,5 @@
 import { useParams } from 'react-router-dom';
+import { Link } from "react-router-dom";
 import React from 'react';
 import axios from "axios";
 import Action from "./Action";
@@ -6,22 +7,47 @@ import Footer from "./Footer";
 
 function Seat(props) {
     //LOGIC
-    //UI
+    const [seatColor, setSeatColor] = React.useState('');
+    const [state, setState] = React.useState(0);
+
+    function SelectSeat() {
+        switch (state) {
+            case 0:
+                console.log(0);
+                props.add();
+                setSeatColor('green');
+                setState(1);
+                break;
+            case 1:
+                console.log(1);
+                props.remove();
+                setSeatColor('normal');
+                setState(0);
+                break;
+            default:
+                setSeatColor('normal');
+                setState(0);
+                break;
+        }
+    }
+
+    //UI-base logic
     function IsAvailable() {
         if (props.isAvailable) {
             return (
-                <div className="seat">
+                <div className={`seat ${seatColor}`} onClick={() => SelectSeat()}>
                     {props.number}
                 </div>
             );
         } else {
             return (
-                <div className="seat yellow">
+                <div className="seat yellow" onClick={() => alert('Esse assento não está disponível')}>
                     {props.number}
                 </div>
             );
         }
     }
+    //UI
     return (
         IsAvailable()
     );
@@ -30,12 +56,38 @@ function Seat(props) {
 export default function SelectPlace() {
     //LOGIC
     const { idSessao } = useParams();
-    console.log(idSessao);
     const [seats, setSeats] = React.useState([]);
+    const [seatsSelects, setSeatsSelects] = React.useState([]);
     const [movieTitle, setMovieTitle] = React.useState('');
     const [movieUrl, setMovieUrl] = React.useState('');
     const [hour, setHour] = React.useState('');
     const [weekday, setWeekday] = React.useState('');
+    const [name, setName] = React.useState('');
+    const [cpf, setCpf] = React.useState('');
+
+    function addSeat(id) {
+        setSeatsSelects([...seatsSelects, id]);
+        console.log(seatsSelects);
+    }
+
+    function removeSeat(id) {
+        setSeatsSelects(seatsSelects.filter((value) => value !== id));
+        console.log(seatsSelects);
+    }
+
+    function submitData(event) {
+        event.preventDefault();
+        if (seatsSelects.length > 0) {
+            axios.post("https://mock-api.driven.com.br/api/v5/cineflex/seats/book-many", 
+            {
+                ids: seatsSelects,
+                name: name,
+                cpf: cpf,
+            });
+        } else {
+            alert("Erro, verifique o(s) assento(s)");
+        }
+    }
 
     React.useEffect(() => {
         const promise = axios.get(`https://mock-api.driven.com.br/api/v5/cineflex/showtimes/${idSessao}/seats`);
@@ -60,7 +112,13 @@ export default function SelectPlace() {
                     Selecione o(s) assento(s)
                 </Action>
                 <div className="seatsPlace">
-                    {seats.map((value) => <Seat number={value.name} key={value.id} isAvailable={value.isAvailable}></Seat>)}
+                    {seats.map((value, index) => <Seat
+                        number={value.name}
+                        id={value.id}
+                        key={value.id}
+                        isAvailable={value.isAvailable}
+                        add={() => addSeat(value.id)}
+                        remove={() => removeSeat(value.id)}></Seat>)}
                 </div>
                 <div className="selectSubtitles">
                     <div className="subtitle">
@@ -86,12 +144,22 @@ export default function SelectPlace() {
                     </div>
                 </div>
                 <div className="formPlace">
-                    <form>
+                    <form onSubmit={submitData}>
                         <label>Nome do comprador:</label>
-                        <input type="text" name="firstname" placeholder="Digite seu nome..." />
+                        <input
+                            type="text"
+                            placeholder="Digite seu nome..."
+                            value={name}
+                            onChange={(e) => setName(e.target.value)}
+                            required />
                         <label>CPF do comprador:</label>
-                        <input type="text" name="firstname" placeholder="Digite seu CPF..." />
-                        <button type="submit">Reservar assento(s)</button>
+                        <input
+                            type="text"
+                            placeholder="Digite seu CPF..."
+                            value={cpf}
+                            onChange={(e) => setCpf(e.target.value)}
+                            required />
+                            <button className="submit" type="submit">Reservar assento(s)</button>
                     </form>
                 </div>
                 <Footer movieTitle={movieTitle} movieUrl={movieUrl} hour={hour} weekday={weekday}></Footer>

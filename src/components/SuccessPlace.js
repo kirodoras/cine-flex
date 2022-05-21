@@ -2,7 +2,7 @@ import Action from "./Action";
 
 export default function SuccessPlace() {
     return (
-        <main className="hidden">
+        <main>
             <div className="successPlace">
                 <Action>
                     <div className="success">
