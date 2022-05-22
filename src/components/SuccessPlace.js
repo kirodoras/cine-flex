@@ -1,11 +1,16 @@
 import {useNavigate, useLocation} from 'react-router-dom';
+import React from 'react';
 import Action from "./Action";
 
-export default function SuccessPlace() {
+export default function SuccessPlace({setScreen}) {
     //LOGIC
     const navigate = useNavigate();
     const location = useLocation();
     const {seatsSelectsNumbers, name, cpf, movieTitle, hour, date} = location.state;
+
+    React.useEffect(() => {
+        setScreen("SuccessPlace");   
+    }, [setScreen]);
     //UI
     return (
         <main>

@@ -15,11 +15,12 @@ function CardMovie(props) {
     );
 }
 
-export default function CardsPlace() {
+export default function CardsPlace({setScreen}) {
     //LOGIC
     const [cards, setCards] = React.useState([]);
 
     React.useEffect(() => {
+        setScreen("CardsPlace");
         const promise = axios.get("https://mock-api.driven.com.br/api/v5/cineflex/movies");
 
         promise.then(response => {
@@ -28,7 +29,7 @@ export default function CardsPlace() {
         }).catch((error) => {
             console.log(error)
         });
-    }, []);
+    }, [setScreen]);
 
     //UI
     return (

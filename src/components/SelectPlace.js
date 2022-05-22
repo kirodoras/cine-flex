@@ -50,7 +50,7 @@ function Seat(props) {
     );
 }
 
-export default function SelectPlace() {
+export default function SelectPlace({setScreen}) {
     //LOGIC
     const { idSessao } = useParams();
     const navigate = useNavigate();
@@ -97,7 +97,7 @@ export default function SelectPlace() {
 
     React.useEffect(() => {
         const promise = axios.get(`https://mock-api.driven.com.br/api/v5/cineflex/showtimes/${idSessao}/seats`);
-
+        setScreen("SelectPlace");
         promise.then(response => {
             console.log(response.data);
             setSeats(response.data.seats);
@@ -109,7 +109,7 @@ export default function SelectPlace() {
         }).catch((error) => {
             console.log(error)
         });
-    }, [idSessao]);
+    }, [idSessao,setScreen]);
 
     //UI
     return (

@@ -18,7 +18,7 @@ function CardChoose(props) {
     );
 }
 
-export default function ChoosePlace() {
+export default function ChoosePlace({setScreen}) {
     //LOGIC
     const {idFilme} = useParams();
     const [sessions, setSessions] = React.useState([]);
@@ -27,7 +27,7 @@ export default function ChoosePlace() {
 
     React.useEffect(() => {
         const promise = axios.get(`https://mock-api.driven.com.br/api/v5/cineflex/movies/${idFilme}/showtimes`);
-
+        setScreen("ChoosePlace");
         promise.then(response => {
             console.log(response.data);
             setSessions(response.data.days);
@@ -36,7 +36,7 @@ export default function ChoosePlace() {
         }).catch((error) => {
             console.log(error)
         });
-    }, [idFilme]);
+    }, [idFilme,setScreen]);
 
     //UI
     return (
