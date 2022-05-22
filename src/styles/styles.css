@@ -311,7 +311,7 @@ footer {
     align-self: center;
     position: fixed;
     bottom: 0px;
-    left: calc((100% / 2) - 187,5px);
+    left: calc((100% / 2) - 187.5px);
     
 
     padding: 14px 10px 14px 10px;
