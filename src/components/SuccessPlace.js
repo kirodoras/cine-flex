@@ -1,6 +1,12 @@
+import {useNavigate, useLocation} from 'react-router-dom';
 import Action from "./Action";
 
 export default function SuccessPlace() {
+    //LOGIC
+    const navigate = useNavigate();
+    const location = useLocation();
+    const {seatsSelectsNumbers, name, cpf, movieTitle, hour, date} = location.state;
+    //UI
     return (
         <main>
             <div className="successPlace">
@@ -14,25 +20,24 @@ export default function SuccessPlace() {
                         <div className="successTitle">
                             Filme e sessão
                         </div>
-                        <div>Enola Holmes</div>
-                        <div>24/06/2021 15:00</div>
+                        <div>{movieTitle}</div>
+                        <div>{date} {hour}</div>
                     </div>
                     <div className="tickets">
                         <div className="successTitle">
                             Ingressos
                         </div>
-                        <div>Assento 15</div>
-                        <div>Assento 16</div>
+                        {seatsSelectsNumbers.map((value,index) => <div key={index}>Assento {value}</div>)}
                     </div>
                     <div className="buyer">
                         <div className="successTitle">
                             Comprador
                         </div>
-                        <div>Nome: João da Silva Sauro</div>
-                        <div> CPF: 123.456.789-10</div>
+                        <div>Nome: {name}</div>
+                        <div> CPF: {cpf}</div>
                     </div>
                 </div>
-                <button type="button">Voltar pra Home</button>
+                <button type="button" onClick={() => navigate("/")}>Voltar pra Home</button>
             </div>
         </main>
     );

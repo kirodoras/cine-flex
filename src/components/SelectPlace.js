@@ -12,13 +12,11 @@ function Seat(props) {
     function SelectSeat() {
         switch (state) {
             case 0:
-                console.log(0);
                 props.add();
                 setSeatColor('green');
                 setState(1);
                 break;
             case 1:
-                console.log(1);
                 props.remove();
                 setSeatColor('normal');
                 setState(0);
@@ -58,21 +56,23 @@ export default function SelectPlace() {
     const navigate = useNavigate();
     const [seats, setSeats] = React.useState([]);
     const [seatsSelects, setSeatsSelects] = React.useState([]);
+    const [seatsSelectsNumbers, setSeatsSelectsNumbers] = React.useState([]);
     const [movieTitle, setMovieTitle] = React.useState('');
     const [movieUrl, setMovieUrl] = React.useState('');
     const [hour, setHour] = React.useState('');
+    const [date, setDate] = React.useState('');
     const [weekday, setWeekday] = React.useState('');
     const [name, setName] = React.useState('');
     const [cpf, setCpf] = React.useState('');
 
-    function addSeat(id) {
+    function addSeat(id, number) {
         setSeatsSelects([...seatsSelects, id]);
-        console.log(seatsSelects);
+        setSeatsSelectsNumbers([...seatsSelectsNumbers, number]);
     }
 
-    function removeSeat(id) {
+    function removeSeat(id, number) {
         setSeatsSelects(seatsSelects.filter((value) => value !== id));
-        console.log(seatsSelects);
+        setSeatsSelectsNumbers(seatsSelectsNumbers.filter((value) => value !== number));
     }
 
     function submitData(event) {
@@ -86,7 +86,7 @@ export default function SelectPlace() {
             });
 
             promise.then((response) => {
-                navigate("/success");
+                navigate("/success", { state: {seatsSelectsNumbers, name, cpf, movieTitle, hour, date}});
                 console.log(response);
             }).catch(err => console.log(err));  
 
@@ -105,6 +105,7 @@ export default function SelectPlace() {
             setMovieUrl(response.data.movie.posterURL);
             setHour(response.data.name);
             setWeekday(response.data.day.weekday);
+            setDate(response.data.day.date);
         }).catch((error) => {
             console.log(error)
         });
@@ -123,8 +124,8 @@ export default function SelectPlace() {
                         id={value.id}
                         key={value.id}
                         isAvailable={value.isAvailable}
-                        add={() => addSeat(value.id)}
-                        remove={() => removeSeat(value.id)}></Seat>)}
+                        add={() => addSeat(value.id, value.name)}
+                        remove={() => removeSeat(value.id, value.name)}></Seat>)}
                 </div>
                 <div className="selectSubtitles">
                     <div className="subtitle">
